@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT tvshow (show)+>
+<!ELEMENT show (name, release, network+, description,
+actors, poster?, viewers?, (end_date | next_episode))>
+
+<!ENTITY % pd "(#PCDATA)">
+
+<!ELEMENT name %pd;>
+<!ATTLIST name id_code ID #REQUIRED>
+
+<!ELEMENT release (#PCDATA)>
+
+<!ELEMENT network (#PCDATA)>
+<!ATTLIST network country CDATA #REQUIRED>
+
+<!ELEMENT description (#PCDATA)>
+
+<!ELEMENT actors (actor)*>
+<!ELEMENT actor (real_name, character)>
+<!ELEMENT real_name (#PCDATA)>
+<!ELEMENT character (#PCDATA)>
+<!ATTLIST character profession CDATA #IMPLIED>
+
+<!ENTITY % poster SYSTEM "tvshows5.ent">
+
+%poster;
+ 
+<!ELEMENT viewers (#PCDATA)>
+<!ATTLIST viewers units (thousand | million) #IMPLIED>
+ 
+<!ELEMENT end_date (#PCDATA)>
+<!ELEMENT next_episode (#PCDATA)>
+
+<!ENTITY great "This show was great!">
+
+<!ENTITY tv_disclaimer SYSTEM "tvshowdis.ent">

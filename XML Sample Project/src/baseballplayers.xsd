@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+targetNamespace="http://www.newthinktank.com/baseballplayers/1.0" 
+xmlns:nttbp="http://www.newthinktank.com/baseballplayers/1.0" 
+elementFormDefault="qualified">
+
+<xs:annotation>
+	<xs:documentation>
+		This XML schema will be used to validate baseball player data
+	</xs:documentation>
+</xs:annotation>
+
+<xs:element name="baseballplayers" />
+
+<xs:element name="player_name" type="xs:string" />
+
+<xs:element name="current_age" type="xs:integer" />
+
+<xs:element name="batting_average" type="xs:decimal" />
+
+<xs:element name="starting" type="xs:boolean" />
+
+<xs:element name="date_born" type="xs:date" />
+
+<xs:element name="next_game_time" type="xs:time" />
+
+<xs:element name="final_game" type="xs:dateTime" />
+
+<xs:element name="time_in_game" type="xs:duration" fixed="PT3H15M" />
+
+<xs:element name="picture" type="xs:anyURI" />
+
+<xs:element name="last_tweet">
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="140" />
+			<xs:minLength value="2" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:element>
+
+<xs:simpleType name="position">
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="Pitcher" />
+		<xs:enumeration value="Catcher" />
+		<xs:enumeration value="Infield" />
+		<xs:enumeration value="Outfield" />
+	</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="id_code">
+	<xs:restriction base="xs:string">
+		<xs:pattern value="\d{2}[a-zA-Z]{2,5}" />
+	</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="prev_bat_avg">
+	<xs:list itemType="xs:decimal" />
+</xs:simpleType>
+
+<!-- Allow an element to be one or anther type using union
+<xs:simpleType name="message_to_fans">
+	<xs:union memberTypes="last_tweet fb_message" />
+</xs:simpleType> -->
+
+	<xs:element name="year_born">
+	    <xs:complexType>
+	    <xs:simpleContent>
+	    	<xs:extension base="xs:int">
+	    		<xs:attribute name="home_state" type="xs:string"></xs:attribute>
+	    	</xs:extension>
+	    </xs:simpleContent>
+    	</xs:complexType>
+    </xs:element>
+    
+    <xs:element name="best_friend">
+	    <xs:complexType>
+	    	<xs:sequence>
+	   			<xs:element name="first_name" type="xs:string" />
+	    		<xs:element name="last_name" type="xs:string" />
+	    	</xs:sequence>
+	    </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="place_of_birth">
+    	<xs:complexType>
+    	<xs:choice>
+    		<xs:element name="city_state" type="xs:string" />
+    		<xs:sequence>
+    			<xs:element name="city" type="xs:string" />
+    			<xs:element name="state" type="xs:string" />
+    		</xs:sequence>
+    	</xs:choice>
+    	</xs:complexType>
+    </xs:element>
+    
+    <xs:complexType name="id_numbers">
+    	<xs:attribute name="ss_number" type="xs:string" />
+    	<xs:attribute name="drivers_lic" type="xs:integer" />
+    </xs:complexType>
+    
+    <xs:complexType name="percent_stat">
+	    <xs:simpleContent>
+	    	<xs:extension base="xs:decimal">
+	    		<xs:attribute name="year" type="xs:int"></xs:attribute>
+	    	</xs:extension>
+	    </xs:simpleContent>
+	</xs:complexType>
+
+	<xs:complexType name="batting_stats">
+		<xs:sequence>
+			<xs:element name="batting_average"
+			 type="nttbp:percent_stat">
+			</xs:element>
+			<xs:element name="obp" type="nttbp:percent_stat">
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="more_batting_stats">
+		<xs:complexContent>
+			<xs:extension base="nttbp:batting_stats">
+				<xs:sequence>
+					<xs:element name="slugging_percentage" type="xs:float"></xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:group name="at_bat_group">
+		<xs:sequence>
+			<xs:element name="at_bat_time" type="xs:dateTime"></xs:element>
+			<xs:element name="at_bat_balls" type="xs:int"></xs:element>
+			<xs:element name="at_bat_ks" type="xs:int"></xs:element>
+			<xs:element name="at_bat_result" type="xs:string"></xs:element>
+		</xs:sequence>
+	</xs:group>
+	
+	<xs:element name="at_bat_pitcher">
+	<xs:complexType>
+		<xs:group ref="nttbp:at_bat_group"/>
+		<xs:attribute name="pitcher_name" type="xs:string" use="required"/>
+	</xs:complexType>
+	</xs:element>
+
+	<xs:attributeGroup name="physique">
+		<xs:attribute name="player_height" type="xs:string"></xs:attribute>
+		<xs:attribute name="player_weight" type="xs:string"></xs:attribute>
+	</xs:attributeGroup>
+
+	<xs:element name="player_size">
+	<xs:complexType>
+		<xs:attributeGroup ref="nttbp:physique"></xs:attributeGroup>
+	</xs:complexType>
+	</xs:element>
+	
+</xs:schema>
